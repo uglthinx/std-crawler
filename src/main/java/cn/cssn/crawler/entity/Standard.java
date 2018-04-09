@@ -12,28 +12,42 @@ public class Standard {
     @Id
     private String id; // 5DDA8B9FFD5B18DEE05397BE0A0A95A7
 
+    @Column(length = 500)
     private String adoptCName; // "振动与冲击传感器校准方法  第16部分：地球重力法校准"
+    @Column(length = 50)
     private String adoptLevel; // "等同"
     private String adoptNo; // "ISO 16063-16:2014"
+    @Column(length = 50)
     private String adoptType; // "ISO"/"无"
 
+    @Column(length = 50)
     private String ccs; // "J04"
 
+    @Column(length = 50)
     private String cdCode; // "469"
     private String cdName; // "国家标准化管理委员会"
 
+
+    @Column(length = 500)
     private String cName; // "振动与冲击传感器校准方法 第16部分：地球重力法校准"
+
+    @Column(length = 500)
     private String eName; // "Methods for the calibration of vibration and shock transducers—Part 16: Calibration by Earth's gravitation"
 
+    @Column(length = 2000)
     private String draftStaff; // "曾吾、杨海龙、周伦彬、毕海蛟"
+    @Column(length = 2000)
     private String draftUnit; // "中国航空工业集团公司北京长城计量测试技术研究所、苏州集成校准检测认证有限公司、广州动态集成检测认证有限公司"
 
+    @Column(length = 50)
     private String hasGbf; // "0"
 
+    @Column(length = 50)
     private String ics; //"17.160";
     private String icsName11; // "17_计量学和测量、物理现象"
     private String icsName1Full; // "17_计量学和测量、物理现象/17.160_振动、冲击和振动测量"
 
+    @Column(length = 50)
     private String issueAnnNo; // "2018年第2号"
 
     @Temporal(TemporalType.DATE)
@@ -42,28 +56,56 @@ public class Standard {
     @Temporal(TemporalType.DATE)
     private Date actDate; // "2018-02-06"
 
+    @Column(length = 50)
     private String planCode; // "20170425-T-469"
     private Long projectId; // "105494"
+
+    @Column(length = 50)
+    private String province; // "天津"
+
     private Long sortWeight; // 20180812
+    @Column(length = 50)
     private String state; // "现行"
 
+    @Column(length = 50)
     private String stdCode; // "GB/T 20485.16-2018"
+    @Column(length = 50)
     private String stdCode2; // "GB/T20485.16-2018"
+    @Column(length = 50)
     private String stdCode3; // "GBT 20485.16-2018"
+    @Column(length = 50)
     private String stdCode4; // "GBT20485.16-2018"
+    @Column(length = 50)
     private String stdCode5; // "20485.16-2018"
 
+    @Column(length = 50)
     private String stdDomains; // "国家标准"
+    @Column(length = 50)
     private String stdNature; // "推荐性"
+    @Column(length = 50)
     private String stdType; // "方法"
     private Date sysInputTime; // "2018-02-07 00:57:50"
 
+    @Column(length = 50)
     private String tableName; // "BV_GB"
+    @Column(length = 50)
     private String taCode; // "TC53"
     private String taName; // "全国机械振动、冲击与状态监测标准化技术委员会"
+    @Column(length = 50)
     private String tmCode; // "TC53SC3"
     private String tmName; // "全国机械振动、冲击与状态监测标准化技术委员会振动测量仪器的使用和校准分会"
+
+    @Column(length = 2000)
     private String totalRepe; // "GB/T 13823.19-2008" 全部替代标准
+
+    @Column(length = 50)
+    private String tradeClassfied; // "制造业"
+    @Column(length = 50)
+    private String tradeDept; // "烟草"
+    @Column(length = 50)
+    private String tradeNo; // "YC"
+
+    private String url;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
@@ -76,7 +118,7 @@ public class Standard {
     public Standard() {
     }
 
-    public Standard(String id, String adoptCName, String adoptLevel, String adoptNo, String adoptType, String ccs, String cdCode, String cdName, String cName, String eName, String draftStaff, String draftUnit, String hasGbf, String ics, String icsName11, String icsName1Full, String issueAnnNo, Date issueDate, Date actDate, String planCode, Long projectId, Long sortWeight, String state, String stdCode, String stdCode2, String stdCode3, String stdCode4, String stdCode5, String stdDomains, String stdNature, String stdType, Date sysInputTime, String tableName, String taCode, String taName, String tmCode, String tmName, String totalRepe, Date createTime, Date updateTime) {
+    public Standard(String id, String adoptCName, String adoptLevel, String adoptNo, String adoptType, String ccs, String cdCode, String cdName, String cName, String eName, String draftStaff, String draftUnit, String hasGbf, String ics, String icsName11, String icsName1Full, String issueAnnNo, Date issueDate, Date actDate, String planCode, Long projectId, String province, Long sortWeight, String state, String stdCode, String stdCode2, String stdCode3, String stdCode4, String stdCode5, String stdDomains, String stdNature, String stdType, Date sysInputTime, String tableName, String taCode, String taName, String tmCode, String tmName, String totalRepe, String tradeClassfied, String tradeDept, String tradeNo, String url, Date createTime, Date updateTime) {
         this.id = id;
         this.adoptCName = adoptCName;
         this.adoptLevel = adoptLevel;
@@ -98,6 +140,7 @@ public class Standard {
         this.actDate = actDate;
         this.planCode = planCode;
         this.projectId = projectId;
+        this.province = province;
         this.sortWeight = sortWeight;
         this.state = state;
         this.stdCode = stdCode;
@@ -115,6 +158,10 @@ public class Standard {
         this.tmCode = tmCode;
         this.tmName = tmName;
         this.totalRepe = totalRepe;
+        this.tradeClassfied = tradeClassfied;
+        this.tradeDept = tradeDept;
+        this.tradeNo = tradeNo;
+        this.url = url;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
@@ -287,6 +334,14 @@ public class Standard {
         this.projectId = projectId;
     }
 
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
     public Long getSortWeight() {
         return sortWeight;
     }
@@ -423,6 +478,38 @@ public class Standard {
         this.totalRepe = totalRepe;
     }
 
+    public String getTradeClassfied() {
+        return tradeClassfied;
+    }
+
+    public void setTradeClassfied(String tradeClassfied) {
+        this.tradeClassfied = tradeClassfied;
+    }
+
+    public String getTradeDept() {
+        return tradeDept;
+    }
+
+    public void setTradeDept(String tradeDept) {
+        this.tradeDept = tradeDept;
+    }
+
+    public String getTradeNo() {
+        return tradeNo;
+    }
+
+    public void setTradeNo(String tradeNo) {
+        this.tradeNo = tradeNo;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -463,6 +550,7 @@ public class Standard {
                 ", actDate=" + actDate +
                 ", planCode='" + planCode + '\'' +
                 ", projectId=" + projectId +
+                ", province='" + province + '\'' +
                 ", sortWeight=" + sortWeight +
                 ", state='" + state + '\'' +
                 ", stdCode='" + stdCode + '\'' +
@@ -480,13 +568,12 @@ public class Standard {
                 ", tmCode='" + tmCode + '\'' +
                 ", tmName='" + tmName + '\'' +
                 ", totalRepe='" + totalRepe + '\'' +
+                ", tradeClassfied='" + tradeClassfied + '\'' +
+                ", tradeDept='" + tradeDept + '\'' +
+                ", tradeNo='" + tradeNo + '\'' +
+                ", url='" + url + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';
     }
-
-    public static void main(String[] args) {
-        System.out.println("Hello world!");
-    }
-
 }

@@ -4,19 +4,22 @@ import cn.cssn.crawler.entity.Standard;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Component
 public class StandardSearchProcessor {
     private static String BASE_URL = "http://www.std.gov.cn/gb/search/gbAdvancedSearchPage";
+    private static Logger logger = LoggerFactory.getLogger(StandardSearchProcessor.class);
+
     private int tid;
     private Date startDate;
     private Date endDate;
@@ -37,25 +40,17 @@ public class StandardSearchProcessor {
         if (endDate != null) {
             url += new SimpleDateFormat("&std_p11=YYYY-MM-DD").format(endDate);
         }
-        System.out.println("Downloading " + url + " ...");
 
         RestTemplate restTemplate = new RestTemplateBuilder().build();
         String responseStr = restTemplate.getForObject(url, String.class);
 
-        System.out.println(responseStr);
         JSONObject jsonObject = JSON.parseObject(responseStr);
-        for (String key : jsonObject.keySet()) {
-            System.out.println(key);
-        }
-        int totalNumber = jsonObject.getIntValue("total");
         JSONArray rows = jsonObject.getJSONArray("rows");
+
+        List<Standard> standards = new ArrayList<>();
         for (Object row : rows) {
             Standard standard = new Standard();
             JSONObject standardJson = (JSONObject) row;
-            List<String> keys = standardJson.keySet().stream().sorted().collect(Collectors.toList());
-            for (String key : keys) {
-                System.out.println(key + " : " + standardJson.get(key));
-            }
             standard.setActDate(standardJson.getDate("ACT_DATE"));
             standard.setAdoptCName(standardJson.getString("ADOPT_C_NAME"));
             standard.setAdoptLevel(standardJson.getString("ADOPT_LEVEL"));
@@ -66,7 +61,10 @@ public class StandardSearchProcessor {
             standard.setCdName(standardJson.getString("CD_NAME"));
             standard.setcName(standardJson.getString("C_NAME"));
             standard.setDraftStaff(standardJson.getString("DRAFT_STAFF"));
-            standard.setDraftStaff(standardJson.getString("DRAFT_UNIT"));
+            if (standardJson.containsKey("DRAFT_USERS")) {
+                standard.setDraftStaff(standardJson.getString("DRAFT_USERS"));
+            }
+            standard.setDraftUnit(standardJson.getString("DRAFT_UNIT"));
             standard.seteName(standardJson.getString("E_NAME"));
             standard.setHasGbf(standardJson.getString("HAS_GBF"));
             standard.setIcs(standardJson.getString("ICS"));
@@ -90,13 +88,30 @@ public class StandardSearchProcessor {
             standard.setTableName(standardJson.getString("TABLE_NAME"));
             standard.setTaCode(standardJson.getString("TA_CODE"));
             standard.setTaName(standardJson.getString("TA_NAME"));
+            if (standardJson.containsKey("TA_UNIT")) {
+                standard.setTaName(standardJson.getString("TA_UNIT"));
+            }
             standard.setTmCode(standardJson.getString("TM_CODE"));
             standard.setTmName(standardJson.getString("TM_NAME"));
             standard.setTotalRepe(standardJson.getString("TOTAL_REPE"));
             standard.setId(standardJson.getString("id"));
-            System.out.println(standard);
+
+            standard.setUrl("http://www.std.gov.cn/db/search/stdDBDetailed?id=" + standard.getId());
+
+            standard.setProvince(standardJson.getString("PROVINCE"));
+            standard.setTradeClassfied(standardJson.getString("TRADE_CLASSIFIED"));
+            standard.setTradeDept(standardJson.getString("TRADE_DEPT"));
+            standard.setTradeNo(standardJson.getString("TRADE_NO"));
+            standards.add(standard);
         }
-        return null;
+
+        int totalNumber = jsonObject.getIntValue("total");
+        logger.info("{} standards in total in TYPE-{}.", totalNumber, tid);
+        boolean hasMore = true;
+        if (totalNumber <= size * page) {
+            hasMore = false;
+        }
+        return new ImmutablePair<>(standards, hasMore);
     }
 
     public static void main(String[] args) {

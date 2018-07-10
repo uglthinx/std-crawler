@@ -14,21 +14,26 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * @author luchenwei
+ */
 @Component
 public class StandardCrawler implements CommandLineRunner {
     private static Logger logger = LoggerFactory.getLogger(StandardCrawler.class);
+    private final StandardRepo standardRepo;
+
     @Autowired
-    private StandardRepo standardRepo;
+    public StandardCrawler(StandardRepo standardRepo) {
+        this.standardRepo = standardRepo;
+    }
 
     @Override
     public void run(String... args) throws Exception {
-        int[] tids = {2, 3, 4}; // 2:国标，3：行标，4：地标
+        // 2:国标，3：行标，4：地标
+        int[] tids = {3};
         for (int tid : tids) {
             StandardSearchProcessor standardSearchProcessor = new StandardSearchProcessor(tid, null, null, 200);
             int page = 1;
-            if (tid == 2) {
-                page = 219;
-            }
             while (true) {
                 logger.info("Getting page {} ...", page);
                 Pair<List<Standard>, Boolean> result = standardSearchProcessor.download(page++);
@@ -43,8 +48,8 @@ public class StandardCrawler implements CommandLineRunner {
         }
     }
 
-    @Transactional
-    private void saveStandards(List<Standard> standards) {
+    @Transactional(rollbackOn = Exception.class)
+    void saveStandards(List<Standard> standards) {
         standardRepo.save(standards);
         logger.info("{} standards saved.", standards.size());
     }
